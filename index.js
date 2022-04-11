@@ -1,26 +1,7 @@
 const { ApolloServer, gql } = require('apollo-server');
 const find = require('lodash/find');
-
-const players = [
-    {
-        id: 1,
-        name: "Paul Atreides",
-        authToken: 'pa',
-        gameState: null
-    },
-    {
-        id: 2,
-        name: "Baron Harkonnen",
-        authToken: 'bh',
-        gameState: {
-            position: {
-                x: 100,
-                y: 0,
-                z: 0
-            }
-        }
-    }
-];
+const { generateAuthToken } = require('./src/helpers/authTokens.js');
+const { players } = require('./src/mocks/players');
 
 // The GraphQL schema
 const typeDefs = gql`
@@ -32,9 +13,16 @@ const typeDefs = gql`
         name: String
         gameState: GameState
         authToken: String
+        password: String
     }
 
     type ErrorPlayerAlreadyExists {
+        message: String
+    }
+
+    union GenerateAuthTokenResponse = Player | ErrorAuthentication
+
+    type ErrorAuthentication {
         message: String
     }
 
@@ -49,13 +37,15 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        createPlayer(name: String!): PlayerResponse
+        "Create a player"
+        createPlayer(name: String!, password: String!): PlayerResponse
+        generateAuthToken(name: String!, password: String!): GenerateAuthTokenResponse
     }
 
     type Query {
-        "A simple type for getting started!"
-        hello: String
+        "Returns a list of all players"
         getAllPlayers: [Player]
+        "Returns a player by its ID"
         getPlayerById(id: ID!): Player
     }
 `;
@@ -63,7 +53,6 @@ const typeDefs = gql`
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    hello: () => 'world',
     getAllPlayers: () => players,
     getPlayerById: (parent, args) => {
         const { id } = args;
@@ -73,7 +62,7 @@ const resolvers = {
   },
   Mutation: {
       createPlayer: (parent, args) => {
-        const { name } = args;
+        const { name, password } = args;
         const existingPlayer = players.find(player => { return player.name === name; });
         if (existingPlayer) {
             return {
@@ -85,6 +74,7 @@ const resolvers = {
             __typename: 'Player',
             id: Math.floor(Math.random()*100),
             name,
+            password,
             gameState: {
                 position: {
                     x: Math.floor(Math.random()*100),
@@ -95,6 +85,22 @@ const resolvers = {
         }
         players.push(player);
         return player;
+      },
+      generateAuthToken: (parent, args) => {
+        const { name, password } = args;
+        const existingPlayer = players.find(player => { return player.name === name; });
+        if (!existingPlayer) {
+            return {
+                __typename: 'ErrorAuthentication',
+                message: 'Authentication error'
+            };
+        }
+        existingPlayer.authToken = generateAuthToken();
+        console.log({token: existingPlayer.authToken});
+        return {
+            __typename: 'Player',
+            ...existingPlayer
+        };
       }
   }
 };
@@ -103,7 +109,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
-1
+
 server.listen().then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
 });
