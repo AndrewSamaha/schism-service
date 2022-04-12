@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@graphql-tools/load-files": "^6.5.3",
+    "@graphql-tools/merge": "^8.2.7",
     "apollo-server": "^3.6.6",
     "dotenv": "^16.0.0",
     "knex": "^1.0.4",
