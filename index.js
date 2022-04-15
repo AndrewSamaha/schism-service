@@ -13,7 +13,8 @@ const server = new ApolloServer({
     resolvers,
     context: ({ req }) => {
         const player = { loggedIn: false, id: null };
-        const token = req.headers.authorization || '';
+        const token = req.headers.authorization || 'NOTOKEN';
+        console.log({token});
         try {
             const payload = jwt.verify(token, secret);
             console.log({payload});

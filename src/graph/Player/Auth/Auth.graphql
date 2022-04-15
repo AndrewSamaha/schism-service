@@ -6,5 +6,5 @@ union GenerateAuthTokenResponse = Player | ErrorAuthentication
 
 type Mutation {
     "Try to generate an auth token by testing a password"
-    generateAuthToken(name: String!, password: String!): GenerateAuthTokenResponse
+    login(name: String!, password: String!): GenerateAuthTokenResponse
 }

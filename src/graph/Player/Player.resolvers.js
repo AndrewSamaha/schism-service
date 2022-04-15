@@ -37,8 +37,9 @@ module.exports = {
           context.players.push(player);
           return player;
         },
-        generateAuthToken: (parent, args, context) => {
+        login: (parent, args, context) => {
           const { name, password } = args;
+          console.log({loginattempt: name, password: password});
           const { secret } = context;
           const existingPlayer = context.players.find(player => { return player.name === name; });
           if (!existingPlayer) {
