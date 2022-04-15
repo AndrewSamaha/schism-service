@@ -1,0 +1,9 @@
+type GameState {
+    position: Position
+}
+
+type Position {
+    x: Float
+    y: Float
+    z: Float
+}

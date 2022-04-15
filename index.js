@@ -1,54 +1,56 @@
 const { ApolloServer, gql } = require('apollo-server');
 const find = require('lodash/find');
+
 const { generateAuthToken } = require('./src/helpers/authTokens.js');
 const { players } = require('./src/mocks/players');
 
-// The GraphQL schema
-const typeDefs = gql`
-    union PlayerResponse = Player | ErrorPlayerAlreadyExists
+const { typeDefs } = require('./src/graph/index')
+// // The GraphQL schema
+// const typeDefs = gql`
+//     union PlayerResponse = Player | ErrorPlayerAlreadyExists
     
-    "A player"
-    type Player {
-        id: ID!
-        name: String
-        gameState: GameState
-        authToken: String
-        password: String
-    }
+//     "A player"
+//     type Player {
+//         id: ID!
+//         name: String
+//         gameState: GameState
+//         authToken: String
+//         password: String
+//     }
 
-    type ErrorPlayerAlreadyExists {
-        message: String
-    }
+//     type ErrorPlayerAlreadyExists {
+//         message: String
+//     }
 
-    union GenerateAuthTokenResponse = Player | ErrorAuthentication
+//     union GenerateAuthTokenResponse = Player | ErrorAuthentication
 
-    type ErrorAuthentication {
-        message: String
-    }
+//     type ErrorAuthentication {
+//         message: String
+//     }
 
-    type GameState {
-        position: Position
-    }
+//     type GameState {
+//         position: Position
+//     }
 
-    type Position {
-        x: Float
-        y: Float
-        z: Float
-    }
+//     type Position {
+//         x: Float
+//         y: Float
+//         z: Float
+//     }
 
-    type Mutation {
-        "Create a player"
-        createPlayer(name: String!, password: String!): PlayerResponse
-        generateAuthToken(name: String!, password: String!): GenerateAuthTokenResponse
-    }
+//     type Mutation {
+//         "Create a player"
+//         createPlayer(name: String!, password: String!): PlayerResponse
+//         generateAuthToken(name: String!, password: String!): GenerateAuthTokenResponse
+//     }
 
-    type Query {
-        "Returns a list of all players"
-        getAllPlayers: [Player]
-        "Returns a player by its ID"
-        getPlayerById(id: ID!): Player
-    }
-`;
+//     type Query {
+//         "Returns a list of all players"
+//         getAllPlayers: [Player]
+//         "Returns a player by its ID"
+//         getPlayerById(id: ID!): Player
+//     }
+// `;
 
 // A map of functions which return data for the schema.
 const resolvers = {

@@ -1,0 +1,28 @@
+"A player"
+type Player {
+    id: ID!
+    name: String
+    gameState: GameState
+    authToken: String
+    password: String
+}
+
+"Return type for when attempting to create a new player"
+union PlayerResponse = Player | ErrorPlayerAlreadyExists
+    
+"Return type for creating a player when one already exists"
+type ErrorPlayerAlreadyExists {
+    message: String
+}
+
+type Mutation {
+    "Create a player"
+    createPlayer(name: String!, password: String!): PlayerResponse
+}
+
+type Query {
+    "Returns a list of all players"
+    getAllPlayers: [Player]
+    "Returns a player by its ID"
+    getPlayerById(id: ID!): Player
+}
