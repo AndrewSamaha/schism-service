@@ -1,4 +1,4 @@
-const { generateAuthToken } = require('../../helpers/authTokens.js');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     Query: {
@@ -39,6 +39,7 @@ module.exports = {
         },
         generateAuthToken: (parent, args, context) => {
           const { name, password } = args;
+          const { secret } = context;
           const existingPlayer = context.players.find(player => { return player.name === name; });
           if (!existingPlayer) {
               return {
@@ -46,7 +47,15 @@ module.exports = {
                   message: 'Authentication error'
               };
           }
-          existingPlayer.authToken = generateAuthToken();
+          const payload = {
+              id: existingPlayer.id,
+              name: existingPlayer.name
+          }
+          const authToken = jwt.sign(payload, secret, {
+              expiresIn: '12h'
+          });
+          existingPlayer.authToken = authToken;
+          console.log({existingPlayer});
           console.log({token: existingPlayer.authToken});
           return {
               __typename: 'Player',

@@ -15,6 +15,7 @@
     "@graphql-tools/merge": "^8.2.7",
     "apollo-server": "^3.6.6",
     "dotenv": "^16.0.0",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^1.0.4",
     "lodash": "^4.17.21",
     "objection": "^3.0.1",

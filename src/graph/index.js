@@ -8,25 +8,13 @@ const typesArray = loadFilesSync(path.join(__dirname, './**/*'), {
 })
 
 const mergedTypeDefs = mergeTypeDefs(typesArray);
-console.log(typesArray);
 
-// const resolversArray = loadFilesSync(path.join(__dirname, './Player/*'), { 
-//     extensions: ['js'], 
-//     recursive: true 
-// })
 const resolversArray = loadFilesSync(path.join(__dirname, './**/*.resolvers.*'), { 
     extensions: ['js'], 
     recursive: true 
 })
-// './**/*.resolvers.*'
 
 const mergedResolvers = mergeResolvers(resolversArray);
-console.log(mergedResolvers);
-// console.log(resolversArray)
-// exports = {
-//     typeDefs: mergeTypeDefs(typesArray),
-//     resolvers: mergeResolvers(resolversArray)
-// };
-// module.exports.resolversArray = mergeResolvers(resolversArray);
+
 module.exports.typeDefs = mergedTypeDefs;
 module.exports.resolvers = mergedResolvers;
