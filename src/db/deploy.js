@@ -1,10 +1,8 @@
-const { Terrain, createSchema: createSchemaTerrain } = require('../models/Terrain');
-const { TileType, createSchema: createSchemaTileType } = require('../models/TileType');
+const { modelCollection } = require('./modelCollection');
 
 const deploy = async (knex) => {
     console.log('deploying database schema');
-    await createSchemaTileType(knex);
-    await createSchemaTerrain(knex);
+    await modelCollection.map(x => x.createSchema(knex));
     console.log('finished deploying schema');
 }
 
