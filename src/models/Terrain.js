@@ -2,6 +2,7 @@ const path = require('path')
 const { Model } = require('objection');
 
 const TABLENAME = 'Terrain';
+const PRIORITY = 100;
 
 class Terrain extends Model {
     static get tableName() { return TABLENAME; }
@@ -25,8 +26,24 @@ async function createSchema(knex) {
     console.log(`created ${TABLENAME}`);
 }
 
+// async function seed(knex) {
+//     Model.knex(knex);
+//     const types = [
+//         'grass',
+//         'stone',
+//         'water',
+//         'sand'
+//     ];
+//     types.map((type) => {
+//         await TileType.query().insert({type})
+//     });
+//     const verifiedTypes = await TileType.query().orderBy('id');
+//     console.log({verifiedTypes});
+// }
+
 module.exports = {
     TABLENAME,
     Terrain,
-    createSchema
+    createSchema,
+    PRIORITY
 }

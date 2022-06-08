@@ -1,7 +1,9 @@
 const path = require('path');
 const { Model } = require('objection');
+const { create } = require('lodash');
 
 const TABLENAME = 'TileTypes';
+const PRIORITY = '1';
 
 // Three ways to create relations while avoiding loops!
 // https://vincit.github.io/objection.js/guide/relations.html#require-loops
@@ -23,19 +25,47 @@ class TileType extends Model {
 async function createSchema(knex) {
     if (await knex.schema.hasTable(TABLENAME)) {
         console.log(`createSchema ${TABLENAME} failed/ table exists`)
-        return;
+        return false;
     }
 
     await knex.schema.createTable(TABLENAME, table => {
         table.increments('id').primary();
-        table.string('src');
+        table.string('type');
     });
 
-    console.log(`created ${TABLENAME}`);
+    return true;
+}
+
+async function seed(knex) {
+    if (!knex) {
+        const error = `${TABLENAME}.seed(knex) was not actually passed a knex obejct`;
+        console.log(error);
+        throw(error);
+        return;
+    }
+
+    Model.knex(knex);
+    const types = [
+        'grass',
+        'stone',
+        'water',
+        'sand'
+    ];
+    
+    console.log('seeding');
+    await types.map(async (type) => {
+        await TileType.query().insert({type})
+    });
+    
+    console.log('verifying...')
+    const verifiedTypes = await TileType.query().orderBy('id');
+    console.log({verifiedTypes});
 }
 
 module.exports = {
     TABLENAME,
     TileType,
-    createSchema
+    createSchema,
+    seed,
+    PRIORITY
 }
