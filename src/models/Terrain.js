@@ -1,6 +1,6 @@
 const path = require('path')
 const { Model } = require('objection');
-
+const { seed: subSeed } = require('./Terrain/seeds');
 const TABLENAME = 'Terrain';
 const PRIORITY = 100;
 
@@ -54,49 +54,53 @@ async function createSchema(knex) {
 }
 
 // https://github.com/Vincit/objection.js/issues/1417
-async function seed(knex) {
-    Model.knex(knex);
-    const { TileType } = require('./TileType.js');
-    const tileTypes = await TileType.query().orderBy('id');
-    const rowSize = 2;
-    const rows = 2;
-    const startPos = { x: 0, y: 0 };
+// async function seed(knex) {
+//     Model.knex(knex);
+//     const { TileType } = require('./TileType.js');
+//     const tileTypes = await TileType.query().orderBy('id');
+//     const rowSize = 2;
+//     const rows = 2;
+//     const startPos = { x: 0, y: 0 };
 
-    // terrain creation happens in two phases
-    // 1. creating terrain squares without a TileType
+//     // terrain creation happens in two phases
+//     // 1. creating terrain squares without a TileType
 
-    for (let x = startPos.x; x < startPos.x + rowSize; x++) {
-        for (let y = startPos.y; y < startPos.y + rows; y++) {
-            const terrain = await Terrain.query().insert({
-                x,
-                y
-            });
-            // // This works but it creates a new
-            // const terrain = await Terrain.query().insert({
-            //     x,
-            //     y
-            // })
-            // await terrain.$relatedQuery('TileType').insert({
-            //     type: 'grass'
-            // })
+//     for (let x = startPos.x; x < startPos.x + rowSize; x++) {
+//         for (let y = startPos.y; y < startPos.y + rows; y++) {
+//             const terrain = await Terrain.query().insert({
+//                 x,
+//                 y
+//             });
+//             // // This works but it creates a new
+//             // const terrain = await Terrain.query().insert({
+//             //     x,
+//             //     y
+//             // })
+//             // await terrain.$relatedQuery('TileType').insert({
+//             //     type: 'grass'
+//             // })
 
-            // // This works but it creates a new TileType
-            // await Terrain.query().insertGraph({
-            //     x,
-            //     y,
-            //     TileType: {
-            //         type: 'grass'
-            //     }
-            // });
-        }
-    }
-    const verifiedTerrain = await Terrain
-        .query()
-        //.joinRelated('TileType')
-        // .where('TileType.id','tileTypeid')
-        ; // .orderBy('id');
-    // const verifiedTerrain = await Terrain.query().orderBy('id');
-    console.log({verifiedTerrain});
+//             // // This works but it creates a new TileType
+//             // await Terrain.query().insertGraph({
+//             //     x,
+//             //     y,
+//             //     TileType: {
+//             //         type: 'grass'
+//             //     }
+//             // });
+//         }
+//     }
+//     const verifiedTerrain = await Terrain
+//         .query()
+//         //.joinRelated('TileType')
+//         // .where('TileType.id','tileTypeid')
+//         ; // .orderBy('id');
+//     // const verifiedTerrain = await Terrain.query().orderBy('id');
+//     console.log({verifiedTerrain});
+// }
+
+async function seed() {
+    await subSeed(Terrain);
 }
 
 module.exports = {

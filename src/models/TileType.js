@@ -36,9 +36,10 @@ async function seed(knex) {
 
     Model.knex(knex);
     const types = [
+        'land',
+        'water',
         'grass',
         'stone',
-        'water',
         'sand'
     ];
     
