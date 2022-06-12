@@ -10,16 +10,6 @@ const PRIORITY = '1';
 // Below, I'm trying solution
 class TileType extends Model {
     static get tableName() { return TABLENAME; }
-    static relationMappings = {
-        Terrain: {
-            relation: Model.HasManyRelation,
-            modelClass: path.join(__dirname, 'Terrain'),
-            join: {
-                from: `${TABLENAME}.id`,
-                to: `Terrain.tileTypeId`
-            }
-        }
-    }
 }
 
 async function createSchema(knex) {

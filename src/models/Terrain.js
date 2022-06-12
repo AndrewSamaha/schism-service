@@ -6,20 +6,32 @@ const PRIORITY = 100;
 
 class Terrain extends Model {
     static get tableName() { return TABLENAME; }
-    static get relationMapping() {
-        const TileType = require('./TileType.js');
+    static relationMappings() {
+        const { TileType, TABLENAME: tileTypeTable } = require('./TileType.js');
+        console.log('ADDING tileType relation to Terrain!!');
+        const joinFrom = `${TABLENAME}.tileTypeId`;
+        const joinTo = `${tileTypeTable}.id`;
+
+        console.log('ADDING tileType relation to Terrain!!');
+        console.log('   joinFrom', joinFrom);
+        console.log('   joinTo', joinTo);
         return {
             TileType: {
                // relation: Model.HasOneRelation,
-                relation: Model.BelongsToOneRelation,
+                relation: Model.BelongsToOneRelation,  // use BelongsToOneRelation when the source model (this model) has a foreign key
                 modelClass: TileType,
                 join: {
                     from: `${TABLENAME}.tileTypeId`,
-                    to: `${TileType.TABLENAME}.id`
+                    to: `${tileTypeTable}.id`
                 }
             }
         }
     }
+
+    // async $beforeInsert(ctx) {
+    //     await this.$relatedQuery('address', ctx.transaction).insertAndFetch({});
+    //     this.createdAt = this.updatedAt = new Date();
+    // }
 }
 
 async function createSchema(knex) {
@@ -49,22 +61,39 @@ async function seed(knex) {
     const rowSize = 2;
     const rows = 2;
     const startPos = { x: 0, y: 0 };
+
+    // terrain creation happens in two phases
+    // 1. creating terrain squares without a TileType
+
     for (let x = startPos.x; x < startPos.x + rowSize; x++) {
         for (let y = startPos.y; y < startPos.y + rows; y++) {
-            await Terrain.query().insertGraph({
+            const terrain = await Terrain.query().insert({
                 x,
-                y,
-              //  tileTypeId: 1
-                TileType: {
-                    type: 'grass'
-                }
+                y
             });
+            // // This works but it creates a new
+            // const terrain = await Terrain.query().insert({
+            //     x,
+            //     y
+            // })
+            // await terrain.$relatedQuery('TileType').insert({
+            //     type: 'grass'
+            // })
+
+            // // This works but it creates a new TileType
+            // await Terrain.query().insertGraph({
+            //     x,
+            //     y,
+            //     TileType: {
+            //         type: 'grass'
+            //     }
+            // });
         }
     }
     const verifiedTerrain = await Terrain
         .query()
-        .joinRelated('TileType')
-        .where('TileType.id','tileTypeid')
+        //.joinRelated('TileType')
+        // .where('TileType.id','tileTypeid')
         ; // .orderBy('id');
     // const verifiedTerrain = await Terrain.query().orderBy('id');
     console.log({verifiedTerrain});
