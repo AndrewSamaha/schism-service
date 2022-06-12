@@ -10,7 +10,8 @@ class Terrain extends Model {
         const TileType = require('./TileType.js');
         return {
             TileType: {
-                relation: Model.HasOneRelation,
+               // relation: Model.HasOneRelation,
+                relation: Model.BelongsToOneRelation,
                 modelClass: TileType,
                 join: {
                     from: `${TABLENAME}.tileTypeId`,
@@ -40,6 +41,7 @@ async function createSchema(knex) {
     return true;
 }
 
+// https://github.com/Vincit/objection.js/issues/1417
 async function seed(knex) {
     Model.knex(knex);
     const { TileType } = require('./TileType.js');
@@ -52,7 +54,10 @@ async function seed(knex) {
             await Terrain.query().insertGraph({
                 x,
                 y,
-                tileTypeId: 1
+              //  tileTypeId: 1
+                TileType: {
+                    type: 'grass'
+                }
             });
         }
     }
