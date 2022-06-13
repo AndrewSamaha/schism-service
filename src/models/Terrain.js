@@ -20,6 +20,7 @@ class Terrain extends Model {
                // relation: Model.HasOneRelation,
                 relation: Model.BelongsToOneRelation,  // use BelongsToOneRelation when the source model (this model) has a foreign key
                 modelClass: TileType,
+                filter: query => query.select('type'),
                 join: {
                     from: `${TABLENAME}.tileTypeId`,
                     to: `${tileTypeTable}.id`

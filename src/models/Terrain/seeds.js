@@ -11,12 +11,12 @@ const createLandOrWater = async (Terrain) => {
     const water = await TileType.query().findOne('type','water');
     for (let x = startPos.x; x < startPos.x + WORLD_SIZE.x; x++) {
         for (let y = startPos.y; y < startPos.y + WORLD_SIZE.y; y++) {
-            const tileType = Math.random() <= pLand ? land.id : water.id;
+            const tileTypeId = Math.random() <= pLand ? land.id : water.id;
             const terrain = await Terrain.query().insert({
                 x,
                 y,
                 //TileType: pLand ? land : water
-                tileTypeId: tileType
+                tileTypeId //: tileType
             });
             // console.log({tileType})
         }
@@ -41,11 +41,17 @@ async function seed(Terrain) {
 
     const verifiedTerrain = await Terrain
         .query()
+        .select('x','y')
+        //.allowGraph('TileType')
+        .withGraphFetched('TileType')
+        // .withGraphFetched({
+        //     TileType: true
+        // })
         //.joinRelated('TileType')
         // .where('TileType.id','tileTypeid')
         ; // .orderBy('id');
     // const verifiedTerrain = await Terrain.query().orderBy('id');
-    console.log({verifiedTerrain});
+    console.log(verifiedTerrain);
 }
 
 module.exports = {
