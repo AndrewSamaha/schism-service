@@ -16,6 +16,7 @@
     "@graphql-tools/merge": "^8.2.7",
     "@vscode/sqlite3": "^5.0.8",
     "apollo-server": "^3.6.6",
+    "datasource-sql": "^2.0.1",
     "dotenv": "^16.0.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^1.0.4",

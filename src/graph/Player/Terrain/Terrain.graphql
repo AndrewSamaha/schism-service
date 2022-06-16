@@ -1,0 +1,8 @@
+"A tile"
+type Tile {
+    id: ID!
+}
+
+type Query {
+    getAllTiles: [Tile]!
+}

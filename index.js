@@ -5,7 +5,8 @@ const { players } = require('./src/mocks/players');
 
 const { typeDefs, resolvers } = require('./src/graph/index')
 const { generateAuthToken } = require('./src/helpers/authTokens');
-const { knex } = require('./src/db/sqlite/sqlite');
+const { knex, knexConfig } = require('./src/db/sqlite/sqlite');
+const { SQLds } = require('./src/datasources/sql');
 const { deploy } = require('./src/db/deploy');
 
     
@@ -14,6 +15,9 @@ console.log({secret});
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    dataSources: () => {
+        db: new SQLds(knexConfig)
+    },
     context: ({ req }) => {
         const player = { loggedIn: false, id: null };
         const token = req.headers.authorization || 'NOTOKEN';
