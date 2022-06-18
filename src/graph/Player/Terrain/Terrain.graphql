@@ -1,8 +1,17 @@
+"A TypeTYpe"
+type TileType {
+    id: ID!
+    type: String!
+}
+
 "A tile"
 type Tile {
     id: ID!
+    x: Int!
+    y: Int!
 }
 
 type Query {
     getAllTiles: [Tile]!
+    getTile(x: Int!, y: Int!): Tile
 }

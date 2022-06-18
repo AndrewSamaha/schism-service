@@ -6,7 +6,7 @@ const { players } = require('./src/mocks/players');
 const { typeDefs, resolvers } = require('./src/graph/index')
 const { generateAuthToken } = require('./src/helpers/authTokens');
 const { knex, knexConfig } = require('./src/db/sqlite/sqlite');
-const { SQLds } = require('./src/datasources/sql');
+const SQLds = require('./src/datasources/sql');
 const { deploy } = require('./src/db/deploy');
 
     
@@ -22,15 +22,15 @@ const server = new ApolloServer({
         const player = { loggedIn: false, id: null };
         const token = req.headers.authorization || 'NOTOKEN';
         
-        console.log({token});
+        console.log({secret, receivedToken: token});
 
         try {
             const payload = jwt.verify(token, secret);
             console.log({payload});
             player.logggedIn = true;
-            player.id = payload.id || 0;
+            player.id = payload?.id || 0;
         } catch (e) {
-            // console.log(e)
+            console.log(e)
         }
         return {
             player,
