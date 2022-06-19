@@ -4,14 +4,6 @@ const { modelCollection } = require('../db/modelCollection');
 class SQLds extends SQLDataSource {
     /// https://www.apollographql.com/docs/apollo-server/data/data-sources/
     /// https://github.com/cvburgess/SQLDataSource
-    // constructor(config) {
-    //     // Always call super()
-    
-    //     super(config);
-    //     console.log({config});
-    //     // Sets the base URL for the REST API
-    //     this.baseURL = 'https://movies-api.example.com/';
-    // }
 
     async getAllTerrain() {
         const { Terrain } = modelCollection.filter(model => model.Terrain)[0];
