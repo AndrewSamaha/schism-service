@@ -8,15 +8,12 @@ const hardCodedTile = {
 
 module.exports = {
     Query: {
-        getAllTiles: (parent, args, context, info, ) => {
-            // const { dataSources } = context;
-            // const { db } = dataSources;
-            // return db.getAllTerrain();
-            return [hardCodedTile, hardCodedTile];
+        // parent, args, context {dataSources}, info
+        getAllTiles: async (_, __, {dataSources}) => {
+            return await dataSources.db.getAllTerrain();
         },
-        getTile: (parent, args, context) => {
-            // const { x, y } = args;
-            return hardCodedTile;
+        getTile: async (_, args, { dataSources }) => {
+            return await dataSources.db.getTile(args);
         }
     }
 };

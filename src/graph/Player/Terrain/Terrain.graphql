@@ -1,6 +1,6 @@
 "A TypeTYpe"
 type TileType {
-    id: ID!
+    id: ID
     type: String!
 }
 
@@ -9,6 +9,7 @@ type Tile {
     id: ID!
     x: Int!
     y: Int!
+    TileType: TileType
 }
 
 type Query {

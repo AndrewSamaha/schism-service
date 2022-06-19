@@ -48,7 +48,12 @@ const createContext = (args) => {
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: createContext
+    context: createContext,
+    dataSources: () => {
+        return {
+            db: new SQLds(knexConfig)
+        }
+    },
 });
 
 deploy(knex);
