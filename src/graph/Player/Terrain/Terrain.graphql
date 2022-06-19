@@ -12,7 +12,13 @@ type Tile {
     TileType: TileType
 }
 
+input PositionInput {
+    x: Int!
+    y: Int!
+}
+
 type Query {
     getAllTiles: [Tile]!
     getTile(x: Int!, y: Int!): Tile
+    getTilesNear(positions: [PositionInput]!, range: Int!): [Tile]!
 }

@@ -14,6 +14,9 @@ module.exports = {
         },
         getTile: async (_, args, { dataSources }) => {
             return await dataSources.db.getTile(args);
+        },
+        getTilesNear: async (_, args, { dataSources }) => {
+            return await dataSources.db.getTilesNear(args);
         }
     }
 };

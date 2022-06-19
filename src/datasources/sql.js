@@ -1,5 +1,6 @@
 const { SQLDataSource } = require("datasource-sql");
 const { modelCollection } = require('../db/modelCollection');
+const { Terrain } = require("../models/Terrain");
 
 class SQLds extends SQLDataSource {
     /// https://www.apollographql.com/docs/apollo-server/data/data-sources/
@@ -18,6 +19,19 @@ class SQLds extends SQLDataSource {
         Terrain.knex(this.knex);
         const tile = await Terrain.query().select('id','x','y').where('x',x).andWhere('y',y).withGraphFetched('TileType').first();
         return tile;
+    }
+
+    async getTilesNear(args) {
+        const { positions, range } = args;
+        const { Terrain } = modelCollection.filter(model => model.Terrain)[0];
+        Terrain.knex(this.knex);
+        const rawQuery = positions.map(({x,y}) => {
+            return `(Terrain.x >= '${(x-range)}' AND Terrain.x <= '${(x+range)}' AND Terrain.y >= '${(y-range)}' AND Terrain.y <= '${(y+range)}')`;
+        }).join(' OR ');
+        const terrain = await Terrain.query().select('id','x','y').distinct(['x','y'])
+                            .whereRaw(rawQuery)
+                            .withGraphFetched('TileType');
+        return terrain;
     }
 }
 
