@@ -1,6 +1,6 @@
 const WORLD_SIZE = {
-    x: 10,
-    y: 10
+    x: 1000,
+    y: 1000
 };
 
 module.exports = {
