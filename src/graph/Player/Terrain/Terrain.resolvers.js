@@ -17,6 +17,15 @@ module.exports = {
         },
         getTilesNear: async (_, args, { dataSources }) => {
             return await dataSources.db.getTilesNear(args);
+        },
+        getWorldState: async(_, args, { dataSources }) => {
+            const { positions, range } = args;
+            return {
+                tiles: await dataSources.db.getTilesNear(args),
+                position: positions,
+                stateTimeUTC: new Date().getTime(),
+                range
+            }
         }
     }
 };

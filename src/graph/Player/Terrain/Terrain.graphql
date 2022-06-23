@@ -17,8 +17,17 @@ input PositionInput {
     y: Int!
 }
 
+"For queries that return information about the world state"
+type WorldState {
+    tiles: [Tile]!
+    position: [Position]
+    stateTimeUTC: String
+    range: Int
+}
+
 type Query {
     getAllTiles: [Tile]!
     getTile(x: Int!, y: Int!): Tile
-    getTilesNear(positions: [PositionInput]!, range: Int!): [Tile]!
+    getTilesNear(positions: [PositionInput]!, range: Int!): [Tile]! @deprecated(reason: "Use 'getWorldState' instead'.")
+    getWorldState(positions: [PositionInput]!, range: Int!): WorldState!
 }
