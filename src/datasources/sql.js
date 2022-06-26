@@ -31,7 +31,7 @@ class SQLds extends SQLDataSource {
         const terrain = await Terrain.query().select('id','x','y').distinct(['x','y'])
                             .whereRaw(rawQuery)
                             .withGraphFetched('TileType');
-        console.log('getNearbyTiles datasource', terrain, positions, range)
+        // console.log('getNearbyTiles datasource', terrain, positions, range)
         return terrain;
     }
 }

@@ -6,13 +6,16 @@ const { knex, knexConfig } = require('./src/db/sqlite/sqlite');
 const SQLds = require('./src/datasources/sql');
 const { deploy } = require('./src/db/deploy');
 
+const db = new SQLds(knexConfig);
+
 const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: createContext,
     dataSources: () => {
+        //console.log('creating new knex ds');
         return {
-            db: new SQLds(knexConfig)
+            db
         }
     },
 });
