@@ -34,6 +34,19 @@ class SQLds extends SQLDataSource {
         // console.log('getNearbyTiles datasource', terrain, positions, range)
         return terrain;
     }
+
+    async getTilesInChunk(args) {
+        const { positions, chunkSize } = args;
+        const { Terrain } = modelCollection.filter(model => model.Terrain)[0];
+        Terrain.knex(this.knex);
+        const rawQuery = positions.map(({x,y}) => {
+            return `(Terrain.x >= '${(x)}' AND Terrain.x <= '${(x+chunkSize)}' AND Terrain.y >= '${(y)}' AND Terrain.y <= '${(y+chunkSize)}')`;
+        }).join(' OR ');
+        const terrain = await Terrain.query().select('id','x','y').distinct(['x','y'])
+                            .whereRaw(rawQuery)
+                            .withGraphFetched('TileType');
+        return terrain;
+    }
 }
 
 module.exports = SQLds;

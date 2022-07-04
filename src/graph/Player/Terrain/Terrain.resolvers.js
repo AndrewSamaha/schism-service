@@ -26,6 +26,15 @@ module.exports = {
                 stateTimeUTC: new Date().getTime(),
                 range
             }
+        },
+        getChunk: async(_, args, { dataSources }) => {
+            const { positions, chunkSize } = args;
+            return {
+                tiles: await dataSources.db.getTilesInChunk(args),
+                position: positions,
+                stateTimeUTC: new Date().getTime(),
+                chunkSize
+            }
         }
     }
 };

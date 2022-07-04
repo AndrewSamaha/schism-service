@@ -28,6 +28,7 @@ type WorldState {
 type Query {
     getAllTiles: [Tile]!
     getTile(x: Int!, y: Int!): Tile
-    getTilesNear(positions: [PositionInput]!, range: Int!): [Tile]! @deprecated(reason: "Use 'getWorldState' instead'.")
+    getTilesNear(positions: [PositionInput]!, range: Int!): [Tile]! @deprecated(reason: "Use 'getChunk' instead'.")
     getWorldState(positions: [PositionInput]!, range: Int!): WorldState!
+    getChunk(positions: [PositionInput]!, chunkSize: Int!): WorldState!
 }
