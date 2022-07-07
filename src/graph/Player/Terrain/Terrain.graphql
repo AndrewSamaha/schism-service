@@ -23,6 +23,7 @@ type WorldState {
     position: [Position]
     stateTimeUTC: String
     range: Int
+    chunkSize: Int
 }
 
 type Query {
