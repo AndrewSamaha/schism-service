@@ -17,6 +17,12 @@ input PositionInput {
     y: Int!
 }
 
+type Chunk {
+    x: Int!
+    y: Int!
+    tiles: [Tile]!
+}
+
 "For queries that return information about the world state"
 type WorldState {
     tiles: [Tile]!
@@ -26,10 +32,18 @@ type WorldState {
     chunkSize: Int
 }
 
+type ChunkCollection {
+    chunkSize: Int
+    chunks: [Chunk]!
+    stateTimeUTC: String
+    queryDuration: Int
+}
+
 type Query {
     getAllTiles: [Tile]!
     getTile(x: Int!, y: Int!): Tile
     getTilesNear(positions: [PositionInput]!, range: Int!): [Tile]! @deprecated(reason: "Use 'getChunk' instead'.")
     getWorldState(positions: [PositionInput]!, range: Int!): WorldState!
     getChunk(positions: [PositionInput]!, chunkSize: Int!): WorldState!
+    getChunkCollection(positions: [PositionInput]!, chunkSize: Int!): ChunkCollection!
 }

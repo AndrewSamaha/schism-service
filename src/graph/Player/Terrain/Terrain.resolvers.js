@@ -35,6 +35,26 @@ module.exports = {
                 stateTimeUTC: new Date().getTime(),
                 chunkSize
             }
+        },
+        getChunkCollection: async(_, args, { dataSources }) => {
+            const { positions, chunkSize } = args;
+            const startTime = Date.now();
+            const chunks = await positions.map((position) => {
+                const { x, y } = position;
+                const tiles = dataSources.db.getTilesInChunk({positions: [position], chunkSize});
+                return {
+                    x,
+                    y,
+                    tiles
+                }
+            })
+            const queryDuration = Date.now() - startTime;
+            return {
+                chunkSize,
+                chunks,
+                stateTimeUTC: new Date().getTime(),
+                queryDuration
+            }
         }
     }
 };
