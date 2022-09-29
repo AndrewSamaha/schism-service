@@ -1,15 +1,21 @@
 const { randomBytes } = require('crypto');
 const jwt = require('jsonwebtoken');
 
-const generateAuthToken = () => randomBytes(48).toString('hex');
-
-const secret = generateAuthToken();
+const generateAuthToken = () => {
+    console.log('generateAuthToken: secret has been created')
+    return randomBytes(48).toString('hex')
+};
 
 const getPlayerFromToken = (token, secret) => {
+    if (!secret) {
+        console.log('getPlayerFromToken secret=null')
+        return null
+    };
     const noPlayer = { loggedIn: false, id: null };
     const player = { loggedIn: true, id: null };
     if (process.env.DEVELOPMENT && token === 'DEVELOPMENT') {
         player.id = 1;
+        console.log('getPlayerFromToken returning dev player')
         return player;
     }
     try {
@@ -26,5 +32,4 @@ const getPlayerFromToken = (token, secret) => {
 }
 
 exports.generateAuthToken = generateAuthToken;
-exports.secret = secret;
 exports.getPlayerFromToken = getPlayerFromToken;

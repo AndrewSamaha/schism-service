@@ -1,4 +1,19 @@
 const jwt = require('jsonwebtoken');
+const { generateAuthToken, secret } = require('../../helpers/authTokens');
+
+// const getJwtSecret = async (context) => {
+//     if (context.secret) return secret;
+    
+//     const { dataSources } = context;
+//     const { redis } = dataSources;
+//     const secretFromRedis = await redis.getJWTSecret();
+//     if (secretFromRedis) return secretFromRedis;
+
+//     const newSecret = generateAuthToken();
+//     await redis.setJwtSecret(newSecret);
+//     context.secret = newSecret;
+//     return newSecret;
+// }
 
 module.exports = {
     Query: {
@@ -39,12 +54,15 @@ module.exports = {
             context.players.push(player);
             return player;
         },
-        login: (parent, args, context) => {
+        login: async (parent, args, context) => {
             console.log('Mutation login');
+
             const { name, password } = args;
-            console.log({loginattempt: name, password: password});
             const { secret } = context;
+            console.log({loginattempt: name, password: password});
+        
             const existingPlayer = context.players.find(player => { return player.name === name; });
+
             if (!existingPlayer) {
                 return {
                     __typename: 'ErrorAuthentication',
