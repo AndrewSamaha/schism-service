@@ -1,11 +1,14 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.0")
+
 "A TypeTYpe"
-type TileType {
+type TileType @federation__key (fields: "id") {
     id: ID
     type: String!
 }
 
 "A tile"
-type Tile {
+type Tile @federation__key (fields: "id") {
     id: ID!
     x: Int!
     y: Int!
@@ -13,14 +16,15 @@ type Tile {
 }
 
 input PositionInput {
-    x: Int!
-    y: Int!
+    x: Float
+    y: Float
 }
 
-type Chunk {
-    x: Int!
-    y: Int!
-    tiles: [Tile]!
+type Chunk @federation__key(fields: "id") {
+    id: ID
+    x: Int
+    y: Int
+    tiles: [Tile] @federation__shareable
 }
 
 "For queries that return information about the world state"
