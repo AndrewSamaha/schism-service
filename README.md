@@ -7,4 +7,6 @@ Also contains docker-compose configuration for redis cache.
 1. Rename `example.env` to `.env`
 1. `npm i`
 1. Start the redis cache `npm run start:deps`
-1. Start the service `npm run start:dev`
+1. Start the service `npm run start:dev`.
+
+On first run, schism-service will create a sqlite database, connect to it, and generate a world.
