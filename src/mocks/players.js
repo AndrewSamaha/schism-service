@@ -1,9 +1,12 @@
+const { PLAYER, SPECTATOR, SUPERUSER } = require('../constants/accessControl');
+
 const players = [
     {
         id: 1,
         name: "Paul Atreides",
         authToken: 'pa',
-        gameState: null
+        gameState: null,
+        userGroups: [ PLAYER ]
     },
     {
         id: 2,
@@ -15,7 +18,22 @@ const players = [
                 y: 0,
                 z: 0
             }
-        }
+        },
+        userGroups: [ PLAYER ]
+    },
+    {
+        id: 3,
+        name: "Cthulhu",
+        authToken: 'ra',
+        gameState: null,
+        userGroups: [ PLAYER, SUPERUSER ]
+    },
+    {
+        id: 4,
+        name: "spectator",
+        authToken: 'ras',
+        gameState: null,
+        userGroups: [ SPECTATOR ]
     }
 ];
 
