@@ -1,24 +1,10 @@
 const jwt = require('jsonwebtoken');
-const { generateAuthToken, secret } = require('../../helpers/authTokens');
-
-// const getJwtSecret = async (context) => {
-//     if (context.secret) return secret;
-    
-//     const { dataSources } = context;
-//     const { redis } = dataSources;
-//     const secretFromRedis = await redis.getJWTSecret();
-//     if (secretFromRedis) return secretFromRedis;
-
-//     const newSecret = generateAuthToken();
-//     await redis.setJwtSecret(newSecret);
-//     context.secret = newSecret;
-//     return newSecret;
-// }
 
 module.exports = {
     Query: {
         getAllPlayers: (parent, args, context, info, ) => {
             console.log('query getAllPlayers')
+            console.log(context.players)
             return context.players
         },
         getPlayerById: (parent, args, context) => {
@@ -71,7 +57,8 @@ module.exports = {
             }
             const payload = {
                 id: existingPlayer.id,
-                name: existingPlayer.name
+                name: existingPlayer.name,
+                userGroups: existingPlayer.userGroups
             }
             const authToken = jwt.sign(payload, secret, {
                 expiresIn: '12h'

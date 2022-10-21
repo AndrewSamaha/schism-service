@@ -1,5 +1,5 @@
-const { PLAYER, SPECTATOR, SUPERUSER } = require('../constants/accessControl');
-
+const { userGroups } = require('../constants/accessControl');
+const { PLAYER, SPECTATOR, SUPERUSER } = userGroups;
 const players = [
     {
         id: 1,

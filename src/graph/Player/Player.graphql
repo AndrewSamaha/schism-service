@@ -5,6 +5,7 @@ type Player {
     gameState: GameState
     authToken: String
     password: String
+    userGroups: [String]!
 }
 
 "Return type for when attempting to create a new player"
