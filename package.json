@@ -10,7 +10,9 @@
     "start:watch": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "rover": "npx -p @apollo/rover rover",
-    "exportgraph": "npx -p @apollo/rover rover graph introspect http://localhost:4000/graphql > subgraph.schema"
+    "exportgraph": "npx -p @apollo/rover rover graph introspect http://localhost:4000/graphql > subgraph.schema",
+    "prepare": "husky install",
+    "commit": "git cz"
   },
   "author": "",
   "license": "ISC",
@@ -33,7 +35,17 @@
     "vscode-sqlite3": "^4.0.11"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
+    "@commitlint/cz-commitlint": "^17.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^8.0.2",
     "nodemon": "^2.0.15",
     "redis-cli": "^2.1.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
